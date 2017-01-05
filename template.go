@@ -1,0 +1,19 @@
+package main
+
+import "text/template"
+
+const ofx102Tmpl = `OFXHEADER:100
+DATA:OFXSGML
+VERSION:102
+SECURITY:NONE
+ENCODING:USASCII
+CHARSET:1252
+COMPRESSION:NONE
+OLDFILEUID:NONE
+NEWFILEUID:NONE
+STANDALONE:NONE
+
+{{ .ToXML }}
+`
+
+var OFX102 = template.Must(template.New("ofx102").Parse(ofx102Tmpl))

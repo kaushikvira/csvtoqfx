@@ -22,3 +22,12 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# Data files
+**/*.csv
+**/*.ofx
+**/*.qfx
+data/*
+
+# Generated Binary
+csvtoqfx
