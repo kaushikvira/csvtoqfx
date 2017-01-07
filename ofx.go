@@ -94,7 +94,7 @@ type Document struct {
 	TRS      StatementTransactionResponseSet `xml:"BANKMSGSRSV1>STMTTRNRS"`
 }
 
-func NewDocument(c *viper.Viper) *Document {
+func NewDocument(c *viper.Viper, p *Parsed) (*Document, error) {
 	d := &Document{config: c}
 	d.Response = SignOnResponse{
 		Severity:       "INFO",
@@ -106,10 +106,14 @@ func NewDocument(c *viper.Viper) *Document {
 	d.TRS = StatementTransactionResponseSet{
 		Severity: "INFO",
 		RS: StatementResponseSet{
-			Currency:    c.GetString("currency"),
-			BankID:      c.GetString("bank_id"),
-			AccountID:   c.GetString("account_id"),
-			AccountType: c.GetString("account_type"),
+			Currency:         c.GetString("currency"),
+			BankID:           c.GetString("bank_id"),
+			AccountID:        c.GetString("account_id"),
+			AccountType:      c.GetString("account_type"),
+			StartDate:        p.Dates["start_date"],
+			EndDate:          p.Dates["end_date"],
+			LedgerBalance:    Balance{Amount: p.Amounts["balance"], Date: p.Dates["asof_date"]},
+			AvailableBalance: Balance{Amount: p.Amounts["avail_balance"], Date: p.Dates["asof_date"]},
 		},
 	}
 	if c.GetString("format") == "qfx" {
@@ -119,7 +123,7 @@ func NewDocument(c *viper.Viper) *Document {
 		}
 	}
 
-	return d
+	return d, nil
 }
 
 func (d *Document) parseTransaction(row []string) (*Transaction, error) {
