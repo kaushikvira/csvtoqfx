@@ -26,14 +26,13 @@ func validateConfig(configfile string) (*Parsed, error) {
 	required := []string{
 		"org_name",
 		"org_id",
-		"bank_name",
 		"bank_id",
 		"account_id",
 		"account_type",
 		"start_date",
 		"end_date",
 		"balance",
-		"available_balance",
+		"avail_balance",
 	}
 
 	for _, attr := range required {
